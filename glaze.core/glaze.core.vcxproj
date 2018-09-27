@@ -188,6 +188,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CompoundFrameReceiver.h" />
+    <ClInclude Include="ErrorCodes.h" />
     <ClInclude Include="Trace.h" />
     <ClInclude Include="ImageMath.h" />
     <ClInclude Include="Frame.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CompoundFrameReceiver.cpp" />
     <ClCompile Include="Trace.cpp" />
     <ClCompile Include="FrameSourceBase.cpp" />
     <ClCompile Include="ImageMath.cpp" />

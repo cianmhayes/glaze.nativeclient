@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <canvas:CanvasControl x:ConnectionId='2' x:Name="canvas"                    />
+        <canvas:CanvasControl x:ConnectionId='2' x:Name="canvas"                   />
     </Grid> 
 </Page>
 

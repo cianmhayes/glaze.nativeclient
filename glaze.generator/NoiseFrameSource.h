@@ -14,7 +14,8 @@ namespace glaze {
                 m_frameType(frameType),
                 m_width(width),
                 m_height(height),
-                m_bytesPerPixel(bytesPerPixel) {};
+                m_bytesPerPixel(bytesPerPixel),
+                m_currentFrameNumber(0){};
 
             ~NoiseFrameSource()
             {
@@ -36,6 +37,7 @@ namespace glaze {
             unsigned int m_width;
             unsigned int m_height;
             unsigned int m_bytesPerPixel;
+            int m_currentFrameNumber;
         };
     }
 }

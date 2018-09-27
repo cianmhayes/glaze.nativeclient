@@ -17,6 +17,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="FrameTest.cpp" />
     <ClCompile Include="MemoryFrameSourceTest.cpp" />
+    <ClCompile Include="ImageMathTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -30,7 +30,7 @@ namespace glaze_test
 			MemoryFrameSource source;
 			for (int i = 0; i < 10; i++)
 			{
-				source.AddFrame(make_shared<Frame>(FrameType::Luma, 1, 1, 1, vector<uint8_t>(1, i)));
+				source.AddFrame(make_shared<Frame>(i, FrameType::Luma, 1, 1, 1, 0, 0, vector<uint8_t>(1, i)));
 			}
 			source.AddFrameReceiver(receiver);
 			source.Start();

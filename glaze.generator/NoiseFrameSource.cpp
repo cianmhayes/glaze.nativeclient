@@ -28,7 +28,7 @@ namespace glaze {
                     {
                         bytes[p] = rand();
                     }
-                    shared_ptr<Frame> newFrame = make_shared<Frame>(m_frameType, m_width, m_height, m_bytesPerPixel, bytes);
+                    shared_ptr<Frame> newFrame = make_shared<Frame>(m_currentFrameNumber++, m_frameType, m_width, m_height, m_bytesPerPixel, 0, 0, bytes);
                     lock_guard<mutex> frameLock(m_frameMutex);
                     m_frameQueue.push(newFrame);
                     TraceFrameGenerated();

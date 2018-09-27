@@ -19,10 +19,15 @@ namespace glaze {
             uint8_t v;
         } HsvColor;
 
+        float ToRadians(uint8_t degrees);
+
+        uint8_t ToDegrees(float radians);
 
         RgbColor HsvToRgb(HsvColor hsv);
 
         HsvColor RgbToHsv(RgbColor rgb);
+
+        uint8_t GetLuma(RgbColor rgb);
 
         void GetSourceCropping(
             unsigned int sourceWidth,

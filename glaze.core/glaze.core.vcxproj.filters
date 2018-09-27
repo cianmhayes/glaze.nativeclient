@@ -11,6 +11,7 @@
     <ClCompile Include="FrameSourceBase.cpp" />
     <ClCompile Include="ImageMath.cpp" />
     <ClCompile Include="Trace.cpp" />
+    <ClCompile Include="CompoundFrameReceiver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -21,6 +22,8 @@
     <ClInclude Include="LambdaFrameReceiver.h" />
     <ClInclude Include="ImageMath.h" />
     <ClInclude Include="Trace.h" />
+    <ClInclude Include="CompoundFrameReceiver.h" />
+    <ClInclude Include="ErrorCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Glaze.wprp" />

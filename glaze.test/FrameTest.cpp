@@ -19,7 +19,7 @@ namespace glaze_test
 			{
 				bytes[i] = rand() % 256;
 			}
-			Frame f = Frame(FrameType::Luma, 10, 20, 1, bytes);
+			Frame f = Frame(1, FrameType::Luma, 10, 20, 1, 0, 0, bytes);
 			Assert::AreEqual((unsigned int)200, f.GetLength());
 			Assert::AreEqual((unsigned int)20, f.GetHeight());
 			Assert::AreEqual((unsigned int)10, f.GetWidth());

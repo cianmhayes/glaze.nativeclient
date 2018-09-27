@@ -14,6 +14,29 @@ TRACELOGGING_DEFINE_PROVIDER(
     "Glaze",
     (0xae9d9ddf, 0x88b, 0x45cb, 0x8f, 0xfa, 0x57, 0x34, 0x33, 0xde, 0x73, 0xc2));
 
+void TraceFrameCaptureStart(int frameNumber)
+{
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "FrameCaptureStart",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
+}
+
+void TraceFrameCaptureEnd(int frameNumber)
+{
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "FrameCaptureEnd",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
+}
+
+void TraceFrameReceived(int frameNumber)
+{
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "FrameReceived",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
+}
 
 void InitializeTracing()
 {
@@ -35,22 +58,36 @@ void TraceFrameDispatched()
     TraceLoggingWrite(g_hGlazeProvider, "FrameDispatched");
 }
 
-void TraceDrawStart()
+void TraceDrawStart(int frameNumber)
 {
-    TraceLoggingWrite(g_hGlazeProvider, "DrawStart");
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "DrawStart",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
 }
 
-void TraceDrawEnd()
+void TraceDrawEnd(int frameNumber)
 {
-    TraceLoggingWrite(g_hGlazeProvider, "DrawEnd");
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "DrawEnd",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
 }
 
-void TraceMissingFrame()
+void TraceMissingFrame(int frameNumber)
 {
-    TraceLoggingWrite(g_hGlazeProvider, "MissingFrame");
+    TraceLoggingWrite(
+        g_hGlazeProvider,
+        "MissingFrame",
+        TraceLoggingInt32(frameNumber, "frameNumber"));
 }
 
 void TraceUpdateCanvas()
 {
     TraceLoggingWrite(g_hGlazeProvider, "UpdateCanvas");
+}
+
+void TraceError(int hresult)
+{
+    TraceLoggingWrite(g_hGlazeProvider, "Exception", TraceLoggingHexInt32(hresult, "hresult"));
 }

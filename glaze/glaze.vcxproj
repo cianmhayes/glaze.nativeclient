@@ -136,6 +136,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CameraStream.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -172,6 +173,7 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="CameraStream.cpp" />
     <ClCompile Include="MainPage.xaml.cpp">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClCompile>
@@ -190,6 +192,9 @@
     </ProjectReference>
     <ProjectReference Include="..\glaze.generator\glaze.generator.vcxproj">
       <Project>{8576ef86-f8d5-4eed-8f51-d48a203c3ef2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\glaze.udp\glaze.udp.vcxproj">
+      <Project>{ae2954c7-ad67-4975-96ab-e14b8e51181a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

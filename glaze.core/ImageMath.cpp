@@ -1,10 +1,16 @@
 #include "pch.h"
 
 #include "ImageMath.h"
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 namespace glaze {
     namespace core {
+
+        uint8_t GetLuma(RgbColor rgb)
+        {
+            return (0.3 * rgb.r) + (0.59 * rgb.g) + (0.11 * rgb.b);
+        }
 
         RgbColor HsvToRgb(HsvColor hsv)
         {
@@ -98,22 +104,34 @@ namespace glaze {
 
             if (sourceRatio > destinationRatio)
             {
-                croppedSourceWidth = floor(sourceHeight * destinationRatio);
                 croppedSourceHeight = sourceHeight;
-                cellSize = destinationHeight / sourceHeight;
+                cellSize = ceil((float)destinationHeight / sourceHeight);
+                croppedSourceWidth = ceil((float)destinationWidth / cellSize);
             }
-            else if (destinationRatio < sourceRatio)
+            else if (sourceRatio < destinationRatio)
             {
-                croppedSourceHeight = floor(sourceWidth * destinationRatio);
                 croppedSourceWidth = sourceWidth;
-                cellSize = destinationWidth / sourceWidth;
+                cellSize = ceil((float)destinationWidth / sourceWidth);
+                croppedSourceHeight = ceil((float)destinationHeight / cellSize);
             }
             else
             {
                 croppedSourceWidth = sourceWidth;
                 croppedSourceHeight = sourceHeight;
-                cellSize = destinationWidth / sourceWidth;
+                cellSize = ceil((float)destinationWidth / sourceWidth);
             }
+        }
+
+        float ToRadians(uint8_t degrees)
+        {
+            float degrees_360 = ((float)degrees / 255) * 360;
+            return degrees_360 * (M_PI / 180.0);
+        }
+
+        uint8_t ToDegrees(float radians)
+        {
+            float degrees_360 = (float)(((int)(radians  * (180.0 / M_PI)) + 360) % 360);
+            return (uint8_t)((degrees_360 / 360) * 255);
         }
     }
 }

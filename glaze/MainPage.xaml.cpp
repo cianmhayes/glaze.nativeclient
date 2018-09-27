@@ -8,6 +8,9 @@
 #include <string>
 #include <cmath>
 
+#include <ppltasks.h>
+#include <MemoryBuffer.h>
+
 #include "../glaze.generator/NoiseFrameSource.h"
 #include "../glaze.core/ImageMath.h"
 #include "../glaze.core/Trace.h"
@@ -28,18 +31,34 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace Microsoft::Graphics::Canvas::UI::Xaml;
 
+using namespace concurrency;
+using namespace Windows::Media::Capture;
+using namespace Windows::Media::MediaProperties;
+using namespace Windows::Foundation;
+using namespace Windows::Graphics::Imaging;
+using namespace Windows::Foundation::Metadata;
+using namespace Platform;
+using namespace Microsoft::WRL;
+using namespace Windows::System::Threading;
+
 using namespace glaze;
 using namespace glaze::core;
 using namespace glaze::generator;
+using namespace glaze::udp;
 
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 MainPage::MainPage()
 {
 	InitializeComponent();
 
-    m_frameSource = make_shared<NoiseFrameSource>(FrameType::Hue, 160, 90, 1);
+    m_cameraSource = ref new CameraStream();
+
+    op = create_task(m_cameraSource->InitializeAsync()).then([this]()
+    {
+        return create_task(m_cameraSource->StartStream());
+    });
+
+    //m_frameSource = make_shared<NoiseFrameSource>(FrameType::Hue, 160, 90, 1);
     m_receiver = make_shared<LambdaFrameReceiver>(
         [this](shared_ptr<glaze::core::Frame> f) 
         {
@@ -49,8 +68,12 @@ MainPage::MainPage()
         {
             this->NotifyMissingFrame();
         });
-    m_frameSource->AddFrameReceiver(m_receiver);
-    m_frameSource->Start();
+    m_cameraSource->SetFrameType(FrameType::Luma);
+    m_cameraSource->AddFrameReceiver(m_receiver);
+    
+    m_udpFrameReceiver = make_shared<UdpFrameReceiver>();
+    m_udpFrameReceiver->Initialize();
+    m_cameraSource->AddFrameReceiver(m_udpFrameReceiver);
 }
 
 void glaze::MainPage::UpdateCanvas(shared_ptr<glaze::core::Frame> newFrame)
@@ -62,19 +85,20 @@ void glaze::MainPage::UpdateCanvas(shared_ptr<glaze::core::Frame> newFrame)
 
 void glaze::MainPage::NotifyMissingFrame()
 {
-    TraceMissingFrame();
 }
 
 void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ args)
 {
-    TraceDrawStart();
-
+    
     if (this->m_currentFrame == 0)
     {
+        TraceDrawStart(-1);
         return;
     }
 
     shared_ptr<glaze::core::Frame> currentFrame = this->m_currentFrame;
+    TraceDrawStart(this->m_currentFrame->GetFrameNumber());
+
     unsigned int frameWidth = currentFrame->GetWidth();
     unsigned int frameHeight = currentFrame->GetHeight();
     unsigned int bytesPerPixel = currentFrame->GetBytesPerPixel();
@@ -104,6 +128,17 @@ void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ ar
 
             switch (currentFrame->GetType())
             {
+                case FrameType::Cyanotype:
+                {
+                    uint8_t luma = currentFrame->GetByte(pixelIndex * bytesPerPixel);
+                    HsvColor hsv;
+                    hsv.h = 147;
+                    hsv.s = 230; // 90%
+                    hsv.v = (((((float)luma) / 255)  * 0.7) + 0.2) * 255;
+                    RgbColor rgb = HsvToRgb(hsv);
+                    cellColour = ColorHelper::FromArgb(255, rgb.r, rgb.g, rgb.b);
+                    break;
+                }
                 case FrameType::Luma:
                 {
                     uint8_t luma = currentFrame->GetByte(pixelIndex * bytesPerPixel);
@@ -114,8 +149,8 @@ void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ ar
                 {
                     HsvColor hsv;
                     hsv.h = currentFrame->GetByte(pixelIndex * bytesPerPixel);
-                    hsv.s = 192;
-                    hsv.v = 255;
+                    hsv.s = 192; // 75%
+                    hsv.v = 217; // 85%
                     RgbColor rgb = HsvToRgb(hsv);
                     cellColour = ColorHelper::FromArgb(255, rgb.r, rgb.g, rgb.b);
                     break;
@@ -128,5 +163,5 @@ void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ ar
         }
     }
 
-    TraceDrawEnd();
+    TraceDrawEnd(this->m_currentFrame->GetFrameNumber());
 }
