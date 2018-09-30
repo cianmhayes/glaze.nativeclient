@@ -36,7 +36,7 @@ using namespace Windows::Media::Capture;
 using namespace Windows::Media::MediaProperties;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Imaging;
-using namespace Windows::Foundation::Metadata;
+//using namespace Windows::Foundation::Metadata;
 using namespace Platform;
 using namespace Microsoft::WRL;
 using namespace Windows::System::Threading;
@@ -58,7 +58,6 @@ MainPage::MainPage()
         return create_task(m_cameraSource->StartStream());
     });
 
-    //m_frameSource = make_shared<NoiseFrameSource>(FrameType::Hue, 160, 90, 1);
     m_receiver = make_shared<LambdaFrameReceiver>(
         [this](shared_ptr<glaze::core::Frame> f) 
         {
@@ -89,7 +88,6 @@ void glaze::MainPage::NotifyMissingFrame()
 
 void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ args)
 {
-    
     if (this->m_currentFrame == 0)
     {
         TraceDrawStart(-1);
@@ -165,3 +163,4 @@ void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ ar
 
     TraceDrawEnd(this->m_currentFrame->GetFrameNumber());
 }
+

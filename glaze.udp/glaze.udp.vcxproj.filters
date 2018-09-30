@@ -9,10 +9,12 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="UdpFrameReceiver.cpp" />
+    <ClCompile Include="UdpFrameSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UdpFrameReceiver.h" />
+    <ClInclude Include="UdpFrameSource.h" />
   </ItemGroup>
 </Project>

@@ -21,41 +21,47 @@ namespace glaze {
                 TraceError(WSAGetLastError());
             }
 
-            BOOL bOptVal = FALSE;
+            BOOL bOptVal = TRUE;
             int bOptLen = sizeof(BOOL);
             if (setsockopt(m_socketId, SOL_SOCKET, SO_BROADCAST, (char *)&bOptVal, bOptLen) != 0)
             {
                 TraceError(WSAGetLastError());
             }
 
-            struct addrinfo *result = NULL;
-            struct addrinfo *ptr = NULL;
-            struct addrinfo hints;
-
-            ZeroMemory(&hints, sizeof(hints));
-            hints.ai_family = AF_INET;
-            hints.ai_socktype = SOCK_DGRAM;
-            hints.ai_protocol = IPPROTO_UDP;
-
-            m_broadcastAddr.sin_family = AF_INET;
-            m_broadcastAddr.sin_port = htons(27015);
-
-            struct sockaddr_in  sockaddr_ipv4;
-            int gaiResult = getaddrinfo("", nullptr, &hints, &result);
-
-            for (ptr = result; ptr != NULL; ptr = ptr->ai_next)
+            if (setsockopt(m_socketId, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptVal, bOptLen) != 0)
             {
-                if (ptr->ai_family == AF_INET && ptr->ai_socktype == SOCK_DGRAM && ptr->ai_protocol == IPPROTO_UDP)
-                {
-                    sockaddr_ipv4 = *((struct sockaddr_in *) ptr->ai_addr);
-                }
+                TraceError(WSAGetLastError());
             }
 
-            m_broadcastAddr.sin_addr = sockaddr_ipv4.sin_addr;
-            m_broadcastAddr.sin_addr.S_un.S_un_b.s_b4 = 255;
+            //struct addrinfo *result = NULL;
+            //struct addrinfo *ptr = NULL;
+            //struct addrinfo hints;
+            //
+            //ZeroMemory(&hints, sizeof(hints));
+            //hints.ai_family = AF_INET;
+            //hints.ai_socktype = SOCK_DGRAM;
+            //hints.ai_protocol = IPPROTO_UDP;
+            //
+            //struct sockaddr_in  sockaddr_ipv4;
+            //int gaiResult = getaddrinfo("", nullptr, &hints, &result);
+            //
+            //for (ptr = result; ptr != NULL; ptr = ptr->ai_next)
+            //{
+            //    if (ptr->ai_family == AF_INET && ptr->ai_socktype == SOCK_DGRAM && ptr->ai_protocol == IPPROTO_UDP)
+            //    {
+            //        sockaddr_ipv4 = *((struct sockaddr_in *) ptr->ai_addr);
+            //    }
+            //}
+
+            //m_broadcastAddr.sin_addr = sockaddr_ipv4.sin_addr;
+            //m_broadcastAddr.sin_addr.S_un.S_un_b.s_b4 = 255;
+
+            m_broadcastAddr.sin_family = AF_INET;
+            m_broadcastAddr.sin_port = htons(m_port);
+            m_broadcastAddr.sin_addr.s_addr = INADDR_BROADCAST;
 
             m_thisAddr.sin_family = AF_INET;
-            m_thisAddr.sin_port = htons(27015);
+            m_thisAddr.sin_port = htons(m_port);
             m_thisAddr.sin_addr.s_addr = INADDR_ANY;
 
             if (bind(m_socketId, (sockaddr*)&m_thisAddr, sizeof(m_thisAddr)) < 0)

@@ -16,19 +16,19 @@ namespace glaze {
 		{
 		public:
 
-			void Start();
+			virtual void Start();
 
-			void Stop()
+			virtual void Stop()
 			{
 				m_running = false;
 			};
 
-			void AddFrameReceiver(std::shared_ptr<FrameReceiver> receiver)
+			virtual void AddFrameReceiver(std::shared_ptr<FrameReceiver> receiver)
 			{
 				m_receivers.push_back(receiver);
 			};
 
-			unsigned int GetFrameCount()
+			virtual unsigned int GetFrameCount()
 			{
 				return m_frameQueue.size();
 			}
@@ -46,7 +46,7 @@ namespace glaze {
 
 			virtual void StartImpl() = 0;
 
-			void DispatchFrame();
+			virtual void DispatchFrame();
 
 			bool m_running;
 			std::thread m_dispatchThread;
