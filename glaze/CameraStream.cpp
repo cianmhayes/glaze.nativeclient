@@ -128,7 +128,7 @@ namespace glaze {
         }
 
         FrameType frameType = m_frameType;
-        unsigned int cellSize = 16;
+        unsigned int cellSize = 10;
         unsigned int width = convertedBmp->PixelWidth;
         unsigned int height = convertedBmp->PixelHeight;
         unsigned int targetWidth = width / cellSize;
@@ -151,26 +151,6 @@ namespace glaze {
                     result[targetByteIndex] = GetAverageLuma(pPixels, x, y, width, cellSize);
                     break;
                 }
-                
-                //int totalLuma = 0;
-                //for (int sub_x = 0; sub_x < cellSize; sub_x++)
-                //{
-                //    for (int sub_y = 0; sub_y < cellSize; sub_y++)
-                //    {
-                //        int total_y = (y * cellSize) + sub_y;
-                //        int total_x = (x * cellSize) + sub_x;
-                //        int pixelIndex = (total_y * width) + total_x;
-                //        int byteIndex = pixelIndex * 4;
-                //
-                //        RgbColor source;
-                //        source.r = pPixels[byteIndex];
-                //        source.g = pPixels[byteIndex + 1];
-                //        source.b = pPixels[byteIndex + 2];
-                //        totalLuma += GetLuma(source);
-                //    }
-                //}
-                //
-                //result[targetByteIndex] = (totalLuma /(cellSize * cellSize));
             }
         }
 

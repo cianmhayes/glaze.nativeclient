@@ -24,6 +24,7 @@ using namespace Windows::UI::Xaml::Controls::Primitives;
 using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
+using namespace Windows::UI::Xaml::Media::Imaging;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace Microsoft::Graphics::Canvas::UI::Xaml;
 
@@ -120,8 +121,8 @@ void glaze_receiver::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEven
             {
                 HsvColor hsv;
                 hsv.h = currentFrame->GetByte(pixelIndex * bytesPerPixel);
-                hsv.s = 192; // 75%
-                hsv.v = 217; // 85%
+                hsv.s = 173; // 68%
+                hsv.v = 224; // 88%
                 RgbColor rgb = HsvToRgb(hsv);
                 cellColour = ColorHelper::FromArgb(255, rgb.r, rgb.g, rgb.b);
                 break;

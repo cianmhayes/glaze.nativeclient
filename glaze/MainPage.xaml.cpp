@@ -147,8 +147,8 @@ void glaze::MainPage::canvas_Draw(CanvasControl^ sender, CanvasDrawEventArgs^ ar
                 {
                     HsvColor hsv;
                     hsv.h = currentFrame->GetByte(pixelIndex * bytesPerPixel);
-                    hsv.s = 192; // 75%
-                    hsv.v = 217; // 85%
+                    hsv.s = 173; // 68%
+                    hsv.v = 224; // 88%
                     RgbColor rgb = HsvToRgb(hsv);
                     cellColour = ColorHelper::FromArgb(255, rgb.r, rgb.g, rgb.b);
                     break;
